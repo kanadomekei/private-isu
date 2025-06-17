@@ -34,7 +34,20 @@ tasks:
     silent: false
 
   load-test:
-    desc: "Run a simple load test using Apache Bench (ab)"
+    desc: "Run comprehensive load test using k6"
+    cmds:
+      - rm -f *.txt *.html *.json
+      - task: db:reset
+      - task: nginx:reset
+      - |
+        echo "Running k6 load test..."
+        k6 run k6-load-test.js
+      - task: db:summary
+      - task: nginx:alp
+    silent: false
+
+  load-test:ab:
+    desc: "Run a simple load test using Apache Bench (ab) - legacy"
     vars:
       URL: "http://localhost/login"
       REQUESTS: 1000
