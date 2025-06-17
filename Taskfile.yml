@@ -1,0 +1,17 @@
+version: '3'
+
+tasks:
+  bench:
+    desc: "Run the private-isu benchmarker and show a readable summary"
+    cmds:
+      - |
+        docker run --rm --network host private-isu-benchmarker /bin/benchmarker -t http://host.docker.internal -u /opt/userdata | \
+        jq -r '
+          "Pass: \(.pass)",
+          "Score: \(.score)",
+          "Success: \(.success)",
+          "Fail: \(.fail)",
+          "Messages:",
+          (.messages[]? | "- " + .)
+        '
+    silent: false 
