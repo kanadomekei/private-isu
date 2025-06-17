@@ -108,6 +108,13 @@ tasks:
       - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'ON';"
       - echo "MySQL slow query log has been reset."
 
+  nginx:reset:
+    desc: "Reset and clear Nginx access and error logs"
+    cmds:
+      - rm -f webapp/logs/nginx/*.log
+      - docker compose -f webapp/docker-compose.yml exec nginx nginx -s reopen
+      - echo "Nginx logs have been reset."
+
   db:tables:
     desc: "Analyze table sizes and statistics"
     cmds:
