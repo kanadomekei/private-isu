@@ -1,6 +1,12 @@
 version: '3'
 
 tasks:
+  compose:
+    desc: "Build and run the webapp stack via docker compose"
+    cmds:
+      - docker compose -f webapp/docker-compose.yml up -d --build
+    silent: false 
+    
   bench:
     desc: "Run the private-isu benchmarker and show a readable summary"
     cmds:
@@ -14,4 +20,4 @@ tasks:
           "Messages:",
           (.messages[]? | "- " + .)
         '
-    silent: false 
+    silent: false
