@@ -115,6 +115,18 @@ tasks:
       - docker compose -f webapp/docker-compose.yml exec nginx nginx -s reopen
       - echo "Nginx logs have been reset."
 
+  nginx:alp:
+    desc: "Analyze Nginx access log with alp and save report to nginx-alp-report.txt"
+    cmds:
+      - |
+        echo "Analyzing with alp..."
+        if [ -f webapp/logs/nginx/access.log ]; then
+          alp ltsv --file webapp/logs/nginx/access.log --sort sum -r > nginx-alp-report.txt
+          echo "Analysis complete. Report saved to nginx-alp-report.txt"
+        else
+          echo "Nginx access log not found."
+        fi
+
   db:tables:
     desc: "Analyze table sizes and statistics"
     cmds:
