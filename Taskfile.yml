@@ -28,6 +28,18 @@ tasks:
         '
     silent: false
 
+  load-test:
+    desc: "Run a simple load test using Apache Bench (ab)"
+    vars:
+      URL: "http://localhost/login"
+      REQUESTS: 1000
+      CONCURRENCY: 100
+    cmds:
+      - |
+        echo "Running load test on {{.URL}} with {{.REQUESTS}} requests and {{.CONCURRENCY}} concurrency..."
+        ab -n {{.REQUESTS}} -c {{.CONCURRENCY}} {{.URL}}
+    silent: false
+
   # Database Performance Analysis Commands Usage Guide:
   # db:slow: 全体的なパフォーマンス問題を詳細に分析したい時
   # db:top: 最近のパフォーマンス問題を素早く確認したい時  
