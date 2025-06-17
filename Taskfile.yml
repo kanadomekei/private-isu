@@ -127,6 +127,19 @@ tasks:
           echo "Nginx access log not found."
         fi
 
+  nginx:goaccess:
+    desc: "Analyze Nginx access log with goaccess and save report to nginx-goaccess-report.html"
+    cmds:
+      - |
+        echo "Analyzing with goaccess..."
+        if [ -f webapp/logs/nginx/access.log ]; then
+          awk -F'\t' '{ for(i=1;i<=NF;i++){ pos = index($i, ":"); if (pos > 0) { key = substr($i, 1, pos - 1); value = substr($i, pos + 1); data[key] = value } } sub("T", " ", data["time"]); sub("\\+.*", "", data["time"]); print data["host"], data["time"], data["method"], data["uri"], "HTTP/1.1", data["status"], data["size"], data["referer"], data["ua"], data["reqtime"] }' webapp/logs/nginx/access.log | \
+          goaccess --log-format='%h %d %t %m %U %H %s %b %R %u %T' --date-format='%Y-%m-%d' --time-format='%H:%M:%S' -o nginx-goaccess-report.html
+          echo "Analysis complete. Report saved to nginx-goaccess-report.html"
+        else
+          echo "Nginx access log not found."
+        fi
+
   db:tables:
     desc: "Analyze table sizes and statistics"
     cmds:
