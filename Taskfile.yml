@@ -16,6 +16,9 @@ tasks:
   bench:
     desc: "Run the private-isu benchmarker and show a readable summary"
     cmds:
+      - rm -f *.txt *.html
+      - task: db:reset
+      - task: nginx:reset
       - |
         docker run --rm --network host private-isu-benchmarker /bin/benchmarker -t http://host.docker.internal -u /opt/userdata | \
         jq -r '
@@ -26,6 +29,8 @@ tasks:
           "Messages:",
           (.messages[]? | "- " + .)
         '
+      - task: db:summary
+      - task: nginx:alp
     silent: false
 
   load-test:
@@ -35,9 +40,14 @@ tasks:
       REQUESTS: 1000
       CONCURRENCY: 100
     cmds:
+      - rm -f *.txt *.html
+      - task: db:reset
+      - task: nginx:reset
       - |
         echo "Running load test on {{.URL}} with {{.REQUESTS}} requests and {{.CONCURRENCY}} concurrency..."
         ab -n {{.REQUESTS}} -c {{.CONCURRENCY}} {{.URL}}
+      - task: db:summary
+      - task: nginx:alp
     silent: false
 
   # Database Performance Analysis Commands Usage Guide:
