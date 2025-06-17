@@ -1,12 +1,18 @@
 version: '3'
 
 tasks:
-  compose:
+  compose:up:
     desc: "Build and run the webapp stack via docker compose"
     cmds:
       - docker compose -f webapp/docker-compose.yml up -d --build
     silent: false 
-    
+
+  compose:down:
+    desc: "Stop and remove the webapp stack via docker compose"
+    cmds:
+      - docker compose -f webapp/docker-compose.yml down -v --remove-orphans
+    silent: false
+
   bench:
     desc: "Run the private-isu benchmarker and show a readable summary"
     cmds:
