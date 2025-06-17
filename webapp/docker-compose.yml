@@ -40,6 +40,13 @@ services:
 
   mysql:
     image: mysql:8.4
+    command: |
+      --slow-query-log=1
+      --slow-query-log-file=/var/log/mysql/slow.log
+      --long-query-time=0
+      --log-queries-not-using-indexes=1
+      --general-log=1
+      --general-log-file=/var/log/mysql/general.log
     environment:
       #- "TZ=Asia/Tokyo"
       - "MYSQL_ROOT_HOST=%"
@@ -47,6 +54,7 @@ services:
     volumes:
       - mysql:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
+      - ./logs/mysql:/var/log/mysql
     ports:
       - "3306:3306"
     networks:
