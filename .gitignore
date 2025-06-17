@@ -23,3 +23,8 @@ webapp/logs/mysql/*
 slow-query-report.txt
 slow-query-top-report.txt
 mysql-stats-report.txt
+mysql-config.txt
+table-stats.txt
+process-status.txt
+
+*.txt

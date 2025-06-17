@@ -95,3 +95,38 @@ tasks:
       - rm -f webapp/logs/mysql/slow.log
       - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'ON';"
       - echo "MySQL slow query log has been reset."
+
+  db:tables:
+    desc: "Analyze table sizes and statistics"
+    cmds:
+      - |
+        docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
+          SELECT 
+            table_name,
+            table_rows,
+            ROUND(data_length/1024/1024, 2) as data_mb,
+            ROUND(index_length/1024/1024, 2) as index_mb
+          FROM information_schema.tables 
+          WHERE table_schema = 'isuconp';
+        " > table-stats.txt
+
+  db:processes:
+    desc: "Show current MySQL processes and connections"
+    cmds:
+      - |
+        docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
+          SHOW PROCESSLIST;
+          SHOW STATUS LIKE 'Threads_%';
+          SHOW STATUS LIKE 'Connection%';
+        " > process-status.txt
+
+  db:config:
+    desc: "Show important MySQL configuration settings"
+    cmds:
+      - |
+        docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
+          SHOW VARIABLES LIKE 'innodb_buffer_pool_size';
+          SHOW VARIABLES LIKE 'query_cache%';
+          SHOW VARIABLES LIKE 'slow_query_log%';
+          SHOW VARIABLES LIKE 'long_query_time';
+        " > mysql-config.txt
