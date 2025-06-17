@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"net/url"
 	"os"
 	"os/exec"
@@ -836,6 +837,11 @@ func main() {
 	defer root.Close()
 
 	r := chi.NewRouter()
+
+	go func() {
+		log.Println("Starting pprof server on :6060")
+		log.Println(http.ListenAndServe(":6060", nil))
+	}()
 
 	r.Get("/initialize", getInitialize)
 	r.Get("/login", getLogin)

@@ -30,3 +30,4 @@ process-status.txt
 
 *.txt
 *.html
+*.pb.gz

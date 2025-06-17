@@ -16,10 +16,16 @@ tasks:
   bench:
     desc: "Run the private-isu benchmarker and show a readable summary"
     cmds:
-      - rm -f *.txt *.html
+      - rm -f *.txt *.html *.pb.gz .pprof_pid
       - task: db:reset
       - task: nginx:reset
       - |
+        echo "Starting CPU profiling..."
+        curl -o bench-cpu-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/profile?seconds=60 &
+        PPROF_PID=$!
+        echo "CPU profiling started (PID: $PPROF_PID)"
+        
+        echo "Running benchmarker..."
         docker run --rm --network host private-isu-benchmarker /bin/benchmarker -t http://host.docker.internal -u /opt/userdata | \
         jq -r '
           "Pass: \(.pass)",
@@ -29,21 +35,50 @@ tasks:
           "Messages:",
           (.messages[]? | "- " + .)
         '
+        
+        echo "Waiting for profiling to complete..."
+        wait $PPROF_PID
+        echo "CPU profiling completed"
+        
+        echo "Taking memory profile snapshot..."
+        curl -o bench-mem-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/heap
+        echo "Memory profile saved"
       - task: db:summary
       - task: nginx:alp
+      - |
+        echo "=== Profile files generated ==="
+        ls -la *profile*.pb.gz 2>/dev/null || echo "No profile files found"
+        echo "Use 'task pprof:web PROFILE=<filename>' to analyze profiles"
     silent: false
 
   load-test:
     desc: "Run comprehensive load test using k6"
     cmds:
-      - rm -f *.txt *.html *.json
+      - rm -f *.txt *.html *.json *.pb.gz .pprof_pid
       - task: db:reset
       - task: nginx:reset
       - |
+        echo "Starting CPU profiling..."
+        curl -o k6-cpu-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/profile?seconds=60 &
+        PPROF_PID=$!
+        echo "CPU profiling started (PID: $PPROF_PID)"
+        
         echo "Running k6 load test..."
         k6 run k6-load-test.js
+        
+        echo "Waiting for profiling to complete..."
+        wait $PPROF_PID
+        echo "CPU profiling completed"
+        
+        echo "Taking memory profile snapshot..."
+        curl -o k6-mem-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/heap
+        echo "Memory profile saved"
       - task: db:summary
       - task: nginx:alp
+      - |
+        echo "=== Profile files generated ==="
+        ls -la *profile*.pb.gz 2>/dev/null || echo "No profile files found"
+        echo "Use 'task pprof:web PROFILE=<filename>' to analyze profiles"
     silent: false
 
   load-test:ab:
@@ -197,3 +232,42 @@ tasks:
           SHOW VARIABLES LIKE 'slow_query_log%';
           SHOW VARIABLES LIKE 'long_query_time';
         " > mysql-config.txt
+
+  # Go pprof profiling commands
+  pprof:start:
+    desc: "Start CPU profiling for 60 seconds in background"
+    cmds:
+      - |
+        echo "Starting CPU profiling for 60 seconds..."
+        curl -o cpu-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/profile?seconds=60 &
+        echo $! > .pprof_pid
+        echo "CPU profiling started (PID: $(cat .pprof_pid))"
+
+  pprof:mem:
+    desc: "Take memory profile snapshot"
+    cmds:
+      - |
+        echo "Taking memory profile snapshot..."
+        curl -o mem-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/heap
+        echo "Memory profile saved"
+
+  pprof:web:
+    desc: "Open pprof web interface for analysis"
+    vars:
+      PROFILE: "{{.PROFILE}}"
+    cmds:
+      - |
+        if [ -z "{{.PROFILE}}" ]; then
+          echo "Usage: task pprof:web PROFILE=<profile-file>"
+          echo "Available profiles:"
+          ls -la *.pb.gz 2>/dev/null || echo "No profile files found"
+          exit 1
+        fi
+        echo "Opening pprof web interface for {{.PROFILE}}"
+        go tool pprof -http=localhost:8081 "{{.PROFILE}}"
+
+  pprof:cleanup:
+    desc: "Clean up old profile files"
+    cmds:
+      - rm -f *.pb.gz .pprof_pid
+      - echo "Profile files cleaned up"

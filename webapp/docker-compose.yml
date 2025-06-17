@@ -28,6 +28,8 @@ services:
       ISUCONP_DB_PASSWORD: root
       ISUCONP_DB_NAME: isuconp
       ISUCONP_MEMCACHED_ADDRESS: memcached:11211
+    ports:
+      - "6060:6060"
     networks:
       - my_network
     volumes:
