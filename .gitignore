@@ -18,3 +18,8 @@ portal/tmp
 .vagrant
 
 webapp/logs/mysql/*
+
+# Slow query report
+slow-query-report.txt
+slow-query-top-report.txt
+mysql-stats-report.txt

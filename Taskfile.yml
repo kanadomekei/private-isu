@@ -28,33 +28,28 @@ tasks:
         '
     silent: false
 
+  # Database Performance Analysis Commands Usage Guide:
+  # db:slow: 全体的なパフォーマンス問題を詳細に分析したい時
+  # db:top: 最近のパフォーマンス問題を素早く確認したい時  
+  # db:stats: リアルタイムのクエリ統計を数値で確認したい時
+
   db:slow:
-    desc: "Analyze MySQL slow query log using pt-query-digest"
+    desc: "Analyze MySQL slow query log and output to slow-query-report.txt"
     cmds:
       - |
-        echo "=== MySQL Slow Query Analysis ==="
+        echo "Analyzing MySQL slow query log..."
         if [ -f webapp/logs/mysql/slow.log ]; then
-          pt-query-digest webapp/logs/mysql/slow.log
+          pt-query-digest webapp/logs/mysql/slow.log > slow-query-report.txt
+          echo "Analysis complete. Report saved to slow-query-report.txt"
         else
           echo "Slow log file not found. Make sure MySQL is running and slow queries are enabled."
         fi
 
-  db:reset:
-    desc: "Reset and clear MySQL slow query log"
-    cmds:
-      - |
-        docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
-          SET GLOBAL slow_query_log = 'OFF';
-          FLUSH SLOW LOGS;
-          SET GLOBAL slow_query_log = 'ON';
-        "
-        echo "MySQL slow query log has been reset."
-
   db:stats:
-    desc: "Show MySQL performance statistics"
+    desc: "Generate MySQL performance statistics report and output to mysql-stats-report.txt"
     cmds:
       - |
-        echo "=== MySQL Performance Statistics ==="
+        echo "=== Generating MySQL Performance Statistics Report ==="
         docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
           SELECT 
             COUNT_STAR as total_queries,
@@ -65,15 +60,17 @@ tasks:
           WHERE DIGEST_TEXT IS NOT NULL
           ORDER BY total_time_sec DESC 
           LIMIT 10;
-        "
+        " > mysql-stats-report.txt
+        echo "Analysis complete. Report saved to mysql-stats-report.txt"
 
   db:top:
-    desc: "Show top slow queries in real-time"
+    desc: "Analyze recent slow queries and output to slow-query-top-report.txt"
     cmds:
       - |
-        echo "=== Top 10 Slowest Queries ==="
+        echo "=== Analyzing Top 10 Slowest Queries from recent logs ==="
         if [ -f webapp/logs/mysql/slow.log ]; then
-          tail -n 100 webapp/logs/mysql/slow.log | pt-query-digest --limit 10
+          tail -n 1000 webapp/logs/mysql/slow.log | pt-query-digest --limit 10 > slow-query-top-report.txt
+          echo "Analysis complete. Report saved to slow-query-top-report.txt"
         else
           echo "Slow log file not found."
         fi
@@ -90,3 +87,11 @@ tasks:
         else
           echo "General log file not found."
         fi
+
+  db:reset:
+    desc: "Reset and clear MySQL slow query log"
+    cmds:
+      - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'OFF'; FLUSH SLOW LOGS;"
+      - rm -f webapp/logs/mysql/slow.log
+      - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'ON';"
+      - echo "MySQL slow query log has been reset."
