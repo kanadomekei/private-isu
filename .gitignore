@@ -18,6 +18,7 @@ portal/tmp
 .vagrant
 
 webapp/logs/mysql/*
+webapp/logs/nginx/*
 
 # Slow query report
 slow-query-report.txt
