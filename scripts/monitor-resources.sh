@@ -27,54 +27,6 @@ echo "Starting monitoring processes..."
 ) &
 DOCKER_PID=$!
 
-# プロジェクト関連プロセスのみをフィルタした監視
-(
-    echo "=== Project Related Processes ===" > "${OUTPUT_DIR}/project-processes.log"
-    for i in $(seq 1 $DURATION); do
-        echo "=== $(date) ===" >> "${OUTPUT_DIR}/project-processes.log"
-        # Docker、MySQL、Nginx、Go関連プロセスのみを表示
-        ps aux | grep -E "(docker|mysql|nginx|go|private-isu)" | grep -v grep >> "${OUTPUT_DIR}/project-processes.log"
-        echo "" >> "${OUTPUT_DIR}/project-processes.log"
-        sleep 1
-    done
-) &
-PROCESS_PID=$!
-
-# システム全体のリソース使用量（軽量版）
-(
-    echo "=== System Resource Summary ===" > "${OUTPUT_DIR}/system-summary.log"
-    for i in $(seq 1 $DURATION); do
-        echo "=== $(date) ===" >> "${OUTPUT_DIR}/system-summary.log"
-        
-        # CPU使用率の簡易表示
-        echo "CPU Usage:" >> "${OUTPUT_DIR}/system-summary.log"
-        top -l 1 -n 0 | head -5 | tail -1 >> "${OUTPUT_DIR}/system-summary.log"
-        
-        # メモリ使用率の簡易表示
-        echo "Memory Usage:" >> "${OUTPUT_DIR}/system-summary.log"
-        vm_stat | head -10 >> "${OUTPUT_DIR}/system-summary.log"
-        
-        # 負荷平均
-        echo "Load Average:" >> "${OUTPUT_DIR}/system-summary.log"
-        uptime >> "${OUTPUT_DIR}/system-summary.log"
-        
-        echo "---" >> "${OUTPUT_DIR}/system-summary.log"
-        sleep 1
-    done
-) &
-SYSTEM_PID=$!
-
-# Docker Composeサービスの状態監視
-(
-    echo "=== Docker Compose Services Status ===" > "${OUTPUT_DIR}/compose-status.log"
-    for i in $(seq 1 $DURATION); do
-        echo "=== $(date) ===" >> "${OUTPUT_DIR}/compose-status.log"
-        docker compose -f webapp/docker-compose.yml ps >> "${OUTPUT_DIR}/compose-status.log" 2>/dev/null
-        echo "" >> "${OUTPUT_DIR}/compose-status.log"
-        sleep 5  # 5秒間隔で十分
-    done
-) &
-COMPOSE_PID=$!
 
 # MySQL関連メトリクス
 (
@@ -133,9 +85,6 @@ APP_PID=$!
 # 監視プロセスIDを記録
 echo "Monitoring PIDs:"
 echo "Docker Detailed: ${DOCKER_PID}"
-echo "Project Processes: ${PROCESS_PID}"
-echo "System Summary: ${SYSTEM_PID}"
-echo "Compose Status: ${COMPOSE_PID}"
 echo "MySQL Metrics: ${MYSQL_PID}"
 echo "Nginx Metrics: ${NGINX_PID}"
 echo "App Metrics: ${APP_PID}"
@@ -148,7 +97,7 @@ sleep $DURATION
 echo "Monitoring duration completed. Stopping all monitoring processes..."
 
 # 全監視プロセスを停止
-kill ${DOCKER_PID} ${PROCESS_PID} ${SYSTEM_PID} ${COMPOSE_PID} ${MYSQL_PID} ${NGINX_PID} ${APP_PID} 2>/dev/null
+kill ${DOCKER_PID} ${MYSQL_PID} ${NGINX_PID} ${APP_PID} 2>/dev/null
 
 # プロセスの終了を待機（最大3秒）
 sleep 3
