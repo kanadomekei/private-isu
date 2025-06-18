@@ -1,0 +1,57 @@
+=== Nginx Container Resource Usage ===
+=== Wed Jun 18 22:13:50 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.00%     7.398MiB / 3.828GiB   0.19%     2.36kB / 1.05kB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:13:55 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.80%     7.516MiB / 3.828GiB   0.19%     69.6kB / 69.3kB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:13:59 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O         BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.38%     7.707MiB / 3.828GiB   0.20%     470kB / 468kB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:03 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.00%     7.836MiB / 3.828GiB   0.20%     7.92MB / 7.88MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:08 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.00%     7.836MiB / 3.828GiB   0.20%     7.92MB / 7.88MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:12 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   2.85%     7.906MiB / 3.828GiB   0.20%     9.38MB / 9.34MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:16 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT    MEM %     NET I/O          BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   1.25%     7.91MiB / 3.828GiB   0.20%     9.8MB / 9.76MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:21 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   1.36%     7.918MiB / 3.828GiB   0.20%     9.81MB / 9.77MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:26 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.53%     7.914MiB / 3.828GiB   0.20%     9.81MB / 9.77MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:30 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.00%     7.945MiB / 3.828GiB   0.20%     9.83MB / 9.79MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:35 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O          BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.00%     7.961MiB / 3.828GiB   0.20%     9.84MB / 9.8MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:39 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.12%     7.992MiB / 3.828GiB   0.20%     9.85MB / 9.82MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:43 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.05%     8.016MiB / 3.828GiB   0.20%     9.87MB / 9.83MB   397kB / 4.1kB   9
+
+=== Wed Jun 18 22:14:47 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O       PIDS
+d9eb16bcaf62   private-isu-nginx-1   0.18%     8.035MiB / 3.828GiB   0.21%     9.87MB / 9.83MB   397kB / 4.1kB   9
+

@@ -1,0 +1,11 @@
+total_queries	total_time_sec	avg_time_sec	DIGEST_TEXT
+181	107.6126	0.5945	SELECT `id` , `user_id` , `body` , `mime` , `created_at` FROM `posts` ORDER BY `created_at` DESC
+6	66.5748	11.0958	SET GLOBAL `slow_query_log` = ?
+253	42.5514	0.1682	SET NAMES `utf8mb4`
+2	2.5989	1.2994	SELECT `COUNT_STAR` AS `total_queries` , `SUM_TIMER_WAIT` / ? AS `total_time_sec` , `AVG_TIMER_WAIT` / ? AS `avg_time_sec` , `DIGEST_TEXT` FROM `performance_schema` . `events_statements_summary_by_digest` WHERE `DIGEST_TEXT` IS NOT NULL ORDER BY `total_time_sec` DESC LIMIT ?
+9	2.3888	0.2654	SELECT @@`version_comment` LIMIT ?
+3	0.3095	0.1032	DELETE FROM `users` WHERE `id` > ?
+3	0.1178	0.0393	FLUSH SLOW LOGS
+3	0.0404	0.0135	DELETE FROM `posts` WHERE `id` > ?
+3	0.0281	0.0094	UPDATE `users` SET `del_flg` = ?
+3	0.0104	0.0035	DELETE FROM `comments` WHERE `id` > ?

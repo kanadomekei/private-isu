@@ -1,0 +1,24 @@
+=== Final Project Summary ===
+Monitoring Duration: 60 seconds
+Timestamp: Wed Jun 18 22:17:43 JST 2025
+
+Docker Containers:
+NAMES                     STATUS              PORTS
+focused_panini            Up About a minute   
+private-isu-app-1         Up About an hour    0.0.0.0:6060->6060/tcp
+private-isu-nginx-1       Up About an hour    0.0.0.0:80->80/tcp
+private-isu-memcached-1   Up About an hour    11211/tcp
+private-isu-mysql-1       Up About an hour    0.0.0.0:3306->3306/tcp, 33060/tcp
+
+Final Resource Usage:
+NAME                      CPU %     MEM USAGE / LIMIT     MEM %     BLOCK I/O
+focused_panini            0.00%     7.047MiB / 3.828GiB   0.18%     4.2MB / 0B
+private-isu-app-1         19.68%    305.2MiB / 1GiB       29.81%    913kB / 0B
+private-isu-nginx-1       0.00%     8.562MiB / 3.828GiB   0.22%     717kB / 4.1kB
+private-isu-memcached-1   0.15%     4.707MiB / 3.828GiB   0.12%     315kB / 0B
+private-isu-mysql-1       107.36%   583.7MiB / 1GiB       57.00%    373MB / 7.27GB
+Generated files:
+-rw-r--r--  1 tsuchiyakeita  staff   3625 Jun 18 22:17 monitoring-reports/20250618-221640/app-metrics.log
+-rw-r--r--  1 tsuchiyakeita  staff  13815 Jun 18 22:17 monitoring-reports/20250618-221640/docker-detailed.log
+-rw-r--r--  1 tsuchiyakeita  staff   3794 Jun 18 22:17 monitoring-reports/20250618-221640/mysql-metrics.log
+-rw-r--r--  1 tsuchiyakeita  staff   3807 Jun 18 22:17 monitoring-reports/20250618-221640/nginx-metrics.log

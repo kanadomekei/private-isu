@@ -1,0 +1,57 @@
+=== App Container Resource Usage ===
+=== Wed Jun 18 22:13:50 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+4bf7deca914c   private-isu-app-1   0.01%     2.449MiB / 1GiB     0.24%     3.19kB / 2.17kB   0B / 0B     6
+
+=== Wed Jun 18 22:13:55 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O   PIDS
+4bf7deca914c   private-isu-app-1   70.69%    16.12MiB / 1GiB     1.57%     2.58MB / 133kB   0B / 0B     10
+
+=== Wed Jun 18 22:13:59 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O   PIDS
+4bf7deca914c   private-isu-app-1   8.10%     14.7MiB / 1GiB      1.44%     6.61MB / 553kB   0B / 0B     10
+
+=== Wed Jun 18 22:14:03 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+4bf7deca914c   private-isu-app-1   1.93%     78.09MiB / 1GiB     7.63%     25.8MB / 8.05MB   0B / 0B     14
+
+=== Wed Jun 18 22:14:08 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O         BLOCK I/O   PIDS
+4bf7deca914c   private-isu-app-1   1.21%     77.85MiB / 1GiB     7.60%     26MB / 8.11MB   0B / 0B     14
+
+=== Wed Jun 18 22:14:12 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+4bf7deca914c   private-isu-app-1   12.41%    83MiB / 1GiB        8.11%     28.8MB / 9.63MB   0B / 0B     14
+
+=== Wed Jun 18 22:14:16 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+4bf7deca914c   private-isu-app-1   78.97%    107MiB / 1GiB       10.45%    36.9MB / 10.1MB   0B / 0B     14
+
+=== Wed Jun 18 22:14:21 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O   PIDS
+4bf7deca914c   private-isu-app-1   3.72%     114.3MiB / 1GiB     11.16%    38.2MB / 10.2MB   0B / 0B     14
+
+=== Wed Jun 18 22:14:26 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O    PIDS
+4bf7deca914c   private-isu-app-1   2.68%     145.9MiB / 1GiB     14.25%    45.7MB / 10.3MB   815kB / 0B   14
+
+=== Wed Jun 18 22:14:30 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O    PIDS
+4bf7deca914c   private-isu-app-1   18.85%    155.3MiB / 1GiB     15.16%    48.1MB / 10.4MB   815kB / 0B   14
+
+=== Wed Jun 18 22:14:34 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O    PIDS
+4bf7deca914c   private-isu-app-1   8.77%     185.2MiB / 1GiB     18.09%    54.6MB / 10.5MB   815kB / 0B   14
+
+=== Wed Jun 18 22:14:39 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O    PIDS
+4bf7deca914c   private-isu-app-1   5.80%     191.4MiB / 1GiB     18.69%    55.9MB / 10.6MB   815kB / 0B   17
+
+=== Wed Jun 18 22:14:43 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O    PIDS
+4bf7deca914c   private-isu-app-1   24.34%    212.6MiB / 1GiB     20.76%    62.5MB / 10.7MB   815kB / 0B   14
+
+=== Wed Jun 18 22:14:47 JST 2025 ===
+CONTAINER ID   NAME                CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O    PIDS
+4bf7deca914c   private-isu-app-1   45.32%    243.7MiB / 1GiB     23.80%    65.6MB / 10.7MB   815kB / 0B   14
+

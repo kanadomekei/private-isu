@@ -1,0 +1,145 @@
+=== Project Docker Containers Resource Monitoring ===
+=== Wed Jun 18 22:13:50 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+4bf7deca914c   private-isu-app-1         0.01%     2.449MiB / 1GiB       0.24%     3.19kB / 2.17kB   0B / 0B          6
+d9eb16bcaf62   private-isu-nginx-1       1.03%     7.402MiB / 3.828GiB   0.19%     2.36kB / 1.05kB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.66%     2.297MiB / 3.828GiB   0.06%     2.33kB / 126B     315kB / 0B       10
+6182c878910b   private-isu-mysql-1       11.89%    491MiB / 1GiB         47.95%    3.7kB / 1.8kB     359MB / 7.27GB   36
+f5a8b00b7925   practical_poincare        109.07%   7.688MiB / 3.828GiB   0.20%     0B / 0B           3.08MB / 0B      10
+
+=== Wed Jun 18 22:13:54 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        1.60%     7.352MiB / 3.828GiB   0.19%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         17.07%    14.94MiB / 1GiB       1.46%     1.13MB / 28.9kB   0B / 0B          10
+d9eb16bcaf62   private-isu-nginx-1       1.31%     7.488MiB / 3.828GiB   0.19%     63.6kB / 63.2kB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.07%     3.34MiB / 3.828GiB    0.09%     3.78kB / 2.01kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       90.56%    506MiB / 1GiB         49.42%    64.7kB / 1.5MB    371MB / 7.27GB   36
+
+=== Wed Jun 18 22:13:57 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.43%     8.137MiB / 3.828GiB   0.21%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         13.99%    15.09MiB / 1GiB       1.47%     4.11MB / 397kB    0B / 0B          10
+d9eb16bcaf62   private-isu-nginx-1       0.34%     7.648MiB / 3.828GiB   0.20%     265kB / 264kB     397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   2.76%     4.355MiB / 3.828GiB   0.11%     7.08kB / 4.88kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       85.09%    505.9MiB / 1GiB       49.41%    217kB / 4.03MB    371MB / 7.27GB   36
+
+=== Wed Jun 18 22:14:00 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        8.48%     7.094MiB / 3.828GiB   0.18%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         11.87%    16.04MiB / 1GiB       1.57%     11.4MB / 4.24MB   0B / 0B          10
+d9eb16bcaf62   private-isu-nginx-1       2.41%     7.73MiB / 3.828GiB    0.20%     4.18MB / 4.15MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.09%     4.363MiB / 3.828GiB   0.11%     9.31kB / 7.13kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       79.43%    508.4MiB / 1GiB       49.65%    333kB / 11.2MB    371MB / 7.27GB   36
+
+=== Wed Jun 18 22:14:03 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.00%     7.156MiB / 3.828GiB   0.18%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         1.93%     78.09MiB / 1GiB       7.63%     25.8MB / 8.05MB   0B / 0B          14
+d9eb16bcaf62   private-isu-nginx-1       0.00%     7.836MiB / 3.828GiB   0.20%     7.92MB / 7.88MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.10%     4.457MiB / 3.828GiB   0.11%     14kB / 10.6kB     315kB / 0B       10
+6182c878910b   private-isu-mysql-1       95.57%    514.2MiB / 1GiB       50.22%    441kB / 25.5MB    371MB / 7.27GB   46
+
+=== Wed Jun 18 22:14:07 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.00%     7.156MiB / 3.828GiB   0.18%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         2.08%     77.84MiB / 1GiB       7.60%     26MB / 8.1MB      0B / 0B          14
+d9eb16bcaf62   private-isu-nginx-1       0.00%     7.836MiB / 3.828GiB   0.20%     7.92MB / 7.88MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.13%     4.457MiB / 3.828GiB   0.11%     14kB / 10.6kB     315kB / 0B       10
+6182c878910b   private-isu-mysql-1       99.16%    513.8MiB / 1GiB       50.18%    507kB / 25.7MB    371MB / 7.27GB   46
+
+=== Wed Jun 18 22:14:10 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.00%     7.156MiB / 3.828GiB   0.18%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         1.69%     77.84MiB / 1GiB       7.60%     26.2MB / 8.15MB   0B / 0B          14
+d9eb16bcaf62   private-isu-nginx-1       0.00%     7.836MiB / 3.828GiB   0.20%     7.92MB / 7.88MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.06%     4.457MiB / 3.828GiB   0.11%     14kB / 10.6kB     315kB / 0B       10
+6182c878910b   private-isu-mysql-1       100.28%   513.9MiB / 1GiB       50.19%    554kB / 25.9MB    371MB / 7.27GB   46
+
+=== Wed Jun 18 22:14:13 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.39%     8.066MiB / 3.828GiB   0.21%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         1.38%     83.27MiB / 1GiB       8.13%     29.1MB / 9.86MB   0B / 0B          14
+d9eb16bcaf62   private-isu-nginx-1       0.26%     7.902MiB / 3.828GiB   0.20%     9.6MB / 9.55MB    397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.08%     4.457MiB / 3.828GiB   0.11%     14kB / 10.6kB     315kB / 0B       10
+6182c878910b   private-isu-mysql-1       102.71%   532.1MiB / 1GiB       51.96%    613kB / 28.8MB    373MB / 7.27GB   55
+
+=== Wed Jun 18 22:14:17 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        2.45%     7.824MiB / 3.828GiB   0.20%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         78.97%    107MiB / 1GiB         10.45%    36.9MB / 10.1MB   0B / 0B          14
+d9eb16bcaf62   private-isu-nginx-1       1.25%     7.91MiB / 3.828GiB    0.20%     9.8MB / 9.76MB    397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.42%     4.734MiB / 3.828GiB   0.12%     20.9kB / 15.2kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       96.92%    553.9MiB / 1GiB       54.10%    705kB / 36.6MB    373MB / 7.27GB   57
+
+=== Wed Jun 18 22:14:20 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.00%     7.82MiB / 3.828GiB    0.20%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         1.89%     114.9MiB / 1GiB       11.22%    38MB / 10.2MB     0B / 0B          14
+d9eb16bcaf62   private-isu-nginx-1       0.00%     7.91MiB / 3.828GiB    0.20%     9.8MB / 9.76MB    397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.75%     4.484MiB / 3.828GiB   0.11%     20.9kB / 15.2kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       104.60%   554.2MiB / 1GiB       54.12%    749kB / 37.8MB    373MB / 7.27GB   57
+
+=== Wed Jun 18 22:14:24 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.00%     7.484MiB / 3.828GiB   0.19%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         10.17%    138.5MiB / 1GiB       13.52%    44.6MB / 10.3MB   815kB / 0B       14
+d9eb16bcaf62   private-isu-nginx-1       0.00%     7.918MiB / 3.828GiB   0.20%     9.81MB / 9.77MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.07%     4.492MiB / 3.828GiB   0.11%     22.9kB / 16.6kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       104.04%   557.7MiB / 1GiB       54.46%    826kB / 44.2MB    373MB / 7.27GB   63
+
+=== Wed Jun 18 22:14:27 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        3.17%     7.758MiB / 3.828GiB   0.20%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         2.66%     145.9MiB / 1GiB       14.25%    45.8MB / 10.3MB   815kB / 0B       14
+d9eb16bcaf62   private-isu-nginx-1       0.44%     7.938MiB / 3.828GiB   0.20%     9.82MB / 9.78MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.11%     4.496MiB / 3.828GiB   0.11%     23.8kB / 17.2kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       107.42%   558.2MiB / 1GiB       54.51%    880kB / 45.5MB    373MB / 7.27GB   66
+
+=== Wed Jun 18 22:14:30 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.00%     7.516MiB / 3.828GiB   0.19%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         18.85%    155.3MiB / 1GiB       15.16%    48.1MB / 10.4MB   815kB / 0B       14
+d9eb16bcaf62   private-isu-nginx-1       0.00%     7.945MiB / 3.828GiB   0.20%     9.83MB / 9.79MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.07%     4.508MiB / 3.828GiB   0.12%     27.8kB / 19.8kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       105.21%   559.1MiB / 1GiB       54.60%    949kB / 47.8MB    373MB / 7.27GB   66
+
+=== Wed Jun 18 22:14:34 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.18%     7.527MiB / 3.828GiB   0.19%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         8.77%     185.2MiB / 1GiB       18.09%    54.6MB / 10.5MB   815kB / 0B       14
+d9eb16bcaf62   private-isu-nginx-1       0.00%     7.961MiB / 3.828GiB   0.20%     9.84MB / 9.8MB    397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.06%     4.516MiB / 3.828GiB   0.12%     29.7kB / 21.3kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       96.78%    563.1MiB / 1GiB       54.99%    1.02MB / 54.3MB   373MB / 7.27GB   73
+
+=== Wed Jun 18 22:14:38 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        2.49%     7.582MiB / 3.828GiB   0.19%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         9.28%     190.3MiB / 1GiB       18.58%    55.8MB / 10.5MB   815kB / 0B       14
+d9eb16bcaf62   private-isu-nginx-1       0.76%     7.984MiB / 3.828GiB   0.20%     9.85MB / 9.81MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.16%     4.523MiB / 3.828GiB   0.12%     31.5kB / 22.4kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       102.33%   563.9MiB / 1GiB       55.07%    1.07MB / 55.5MB   373MB / 7.27GB   77
+
+=== Wed Jun 18 22:14:41 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.00%     7.711MiB / 3.828GiB   0.20%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         1.54%     196.4MiB / 1GiB       19.18%    57.1MB / 10.6MB   815kB / 0B       14
+d9eb16bcaf62   private-isu-nginx-1       0.00%     7.992MiB / 3.828GiB   0.20%     9.86MB / 9.82MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.07%     4.539MiB / 3.828GiB   0.12%     34.8kB / 24.5kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       98.17%    564.9MiB / 1GiB       55.16%    1.11MB / 56.7MB   373MB / 7.27GB   78
+
+=== Wed Jun 18 22:14:44 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.11%     7.906MiB / 3.828GiB   0.20%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         10.48%    220.9MiB / 1GiB       21.58%    63.6MB / 10.7MB   815kB / 0B       14
+d9eb16bcaf62   private-isu-nginx-1       0.07%     8.023MiB / 3.828GiB   0.20%     9.87MB / 9.83MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.06%     4.547MiB / 3.828GiB   0.12%     36.1kB / 25.4kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       98.56%    566.7MiB / 1GiB       55.34%    1.19MB / 63.2MB   373MB / 7.27GB   84
+
+=== Wed Jun 18 22:14:47 JST 2025 ===
+CONTAINER      NAME                      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O        PIDS
+f5a8b00b7925   practical_poincare        0.55%     7.922MiB / 3.828GiB   0.20%     0B / 0B           11.3MB / 0B      10
+4bf7deca914c   private-isu-app-1         45.32%    243.7MiB / 1GiB       23.80%    65.6MB / 10.7MB   815kB / 0B       14
+d9eb16bcaf62   private-isu-nginx-1       0.18%     8.035MiB / 3.828GiB   0.21%     9.87MB / 9.83MB   397kB / 4.1kB    9
+fe89e15e8381   private-isu-memcached-1   0.11%     4.551MiB / 3.828GiB   0.12%     36.8kB / 25.9kB   315kB / 0B       10
+6182c878910b   private-isu-mysql-1       98.32%    567.6MiB / 1GiB       55.43%    1.23MB / 65.2MB   373MB / 7.27GB   86
+

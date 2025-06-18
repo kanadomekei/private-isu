@@ -1,0 +1,24 @@
+=== Final Project Summary ===
+Monitoring Duration: 60 seconds
+Timestamp: Wed Jun 18 22:25:16 JST 2025
+
+Docker Containers:
+NAMES                     STATUS              PORTS
+vibrant_buck              Up About a minute   
+private-isu-app-1         Up About a minute   0.0.0.0:6060->6060/tcp
+private-isu-nginx-1       Up About an hour    0.0.0.0:80->80/tcp
+private-isu-memcached-1   Up About an hour    11211/tcp
+private-isu-mysql-1       Up About an hour    0.0.0.0:3306->3306/tcp, 33060/tcp
+
+Final Resource Usage:
+NAME                      CPU %     MEM USAGE / LIMIT     MEM %     BLOCK I/O
+vibrant_buck              0.00%     7.297MiB / 3.828GiB   0.19%     16.7MB / 0B
+private-isu-app-1         10.09%    311.3MiB / 1GiB       30.40%    0B / 0B
+private-isu-nginx-1       0.00%     8.574MiB / 3.828GiB   0.22%     717kB / 4.1kB
+private-isu-memcached-1   0.05%     4.785MiB / 3.828GiB   0.12%     315kB / 0B
+private-isu-mysql-1       104.62%   598.2MiB / 1GiB       58.42%    373MB / 7.29GB
+Generated files:
+-rw-r--r--  1 tsuchiyakeita  staff   3610 Jun 18 22:25 monitoring-reports/20250618-222413/app-metrics.log
+-rw-r--r--  1 tsuchiyakeita  staff  14578 Jun 18 22:25 monitoring-reports/20250618-222413/docker-detailed.log
+-rw-r--r--  1 tsuchiyakeita  staff   3789 Jun 18 22:25 monitoring-reports/20250618-222413/mysql-metrics.log
+-rw-r--r--  1 tsuchiyakeita  staff   3813 Jun 18 22:25 monitoring-reports/20250618-222413/nginx-metrics.log

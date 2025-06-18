@@ -1,0 +1,57 @@
+=== MySQL Container Resource Usage ===
+=== Wed Jun 18 22:24:13 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   18.39%    584.3MiB / 1GiB     57.06%    6.68MB / 166MB   373MB / 7.28GB   44
+
+=== Wed Jun 18 22:24:18 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   83.26%    590.4MiB / 1GiB     57.66%    7.86MB / 173MB   373MB / 7.28GB   44
+
+=== Wed Jun 18 22:24:22 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   101.03%   590.4MiB / 1GiB     57.65%    8.01MB / 186MB   373MB / 7.28GB   44
+
+=== Wed Jun 18 22:24:27 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O         BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   99.83%    590.9MiB / 1GiB     57.71%    8.1MB / 195MB   373MB / 7.28GB   46
+
+=== Wed Jun 18 22:24:30 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   99.25%    591.5MiB / 1GiB     57.77%    8.18MB / 196MB   373MB / 7.28GB   46
+
+=== Wed Jun 18 22:24:35 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   131.87%   591.9MiB / 1GiB     57.80%    8.27MB / 204MB   373MB / 7.28GB   58
+
+=== Wed Jun 18 22:24:39 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   102.87%   591.7MiB / 1GiB     57.78%    8.33MB / 206MB   373MB / 7.28GB   58
+
+=== Wed Jun 18 22:24:43 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   95.86%    591.8MiB / 1GiB     57.79%    8.42MB / 209MB   373MB / 7.28GB   65
+
+=== Wed Jun 18 22:24:48 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   99.31%    592.3MiB / 1GiB     57.84%    8.52MB / 216MB   373MB / 7.28GB   66
+
+=== Wed Jun 18 22:24:52 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   102.19%   592MiB / 1GiB       57.81%    8.58MB / 217MB   373MB / 7.28GB   66
+
+=== Wed Jun 18 22:24:57 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   100.15%   592.3MiB / 1GiB     57.84%    8.69MB / 224MB   373MB / 7.28GB   77
+
+=== Wed Jun 18 22:25:01 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   97.16%    592.4MiB / 1GiB     57.85%    8.75MB / 227MB   373MB / 7.28GB   77
+
+=== Wed Jun 18 22:25:06 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   101.16%   594.6MiB / 1GiB     58.06%    8.84MB / 233MB   373MB / 7.28GB   88
+
+=== Wed Jun 18 22:25:10 JST 2025 ===
+CONTAINER ID   NAME                  CPU %     MEM USAGE / LIMIT   MEM %     NET I/O          BLOCK I/O        PIDS
+6182c878910b   private-isu-mysql-1   103.16%   594.4MiB / 1GiB     58.05%    8.91MB / 235MB   373MB / 7.28GB   88
+

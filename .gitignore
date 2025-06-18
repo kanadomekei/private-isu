@@ -21,14 +21,14 @@ webapp/logs/mysql/*
 webapp/logs/nginx/*
 
 # Slow query report
-slow-query-report.txt
-slow-query-top-report.txt
-mysql-stats-report.txt
-mysql-config.txt
-table-stats.txt
-process-status.txt
+./slow-query-report.txt
+./slow-query-top-report.txt
+./mysql-stats-report.txt
+./mysql-config.txt
+./table-stats.txt
+./process-status.txt
 
-*.txt
+./*.txt
 *.html
 *.pb.gz
-monitoring-reports/
+./monitoring-reports/
