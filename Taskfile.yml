@@ -51,6 +51,39 @@ tasks:
         echo "Use 'task pprof:web PROFILE=<filename>' to analyze profiles"
     silent: false
 
+  bench:with-monitoring:
+    desc: "Run benchmarker with project-focused resource monitoring"
+    cmds:
+      - rm -f *.txt *.html *.pb.gz .pprof_pid
+      - task: db:reset
+      - task: nginx:reset
+      - |
+        echo "Starting project resource monitoring..."
+        ./scripts/monitor-resources.sh 60 &
+        MONITOR_PID=$!
+        
+        echo "Running benchmarker..."
+        docker run --rm --network host private-isu-benchmarker /bin/benchmarker -t http://host.docker.internal -u /opt/userdata | \
+        jq -r '
+          "Pass: \(.pass)",
+          "Score: \(.score)",
+          "Success: \(.success)",
+          "Fail: \(.fail)",
+          "Messages:",
+          (.messages[]? | "- " + .)
+        ' | tee benchmark-results.txt
+        
+        echo "Waiting for resource monitoring to complete..."
+        wait $MONITOR_PID
+        echo "Project resource monitoring completed"
+      - task: db:summary
+      - task: nginx:alp
+      - |
+        echo "=== All analysis files generated ==="
+        ls -la monitoring-reports/*/
+        echo "Check monitoring-reports/ directory for detailed resource analysis"
+    silent: false
+
   load-test:
     desc: "Run comprehensive load test using k6"
     cmds:
@@ -271,3 +304,56 @@ tasks:
     cmds:
       - rm -f *.pb.gz .pprof_pid
       - echo "Profile files cleaned up"
+
+  # Resource monitoring tasks
+  monitor:resources:
+    desc: "Monitor project-specific resources (Docker containers, processes)"
+    vars:
+      DURATION: "{{.DURATION | default \"60\"}}"
+      OUTPUT_DIR: "{{.OUTPUT_DIR | default \"\"}}"
+    cmds:
+      - |
+        if [ -z "{{.OUTPUT_DIR}}" ]; then
+          ./scripts/monitor-resources.sh {{.DURATION}}
+        else
+          ./scripts/monitor-resources.sh {{.DURATION}} {{.OUTPUT_DIR}}
+        fi
+
+  load-test:with-monitoring:
+    desc: "Run k6 load test with comprehensive resource monitoring"
+    cmds:
+      - rm -f *.txt *.html *.json *.pb.gz .pprof_pid
+      - task: db:reset
+      - task: nginx:reset
+      - |
+        echo "Starting resource monitoring..."
+        ./scripts/monitor-resources.sh 60 &
+        MONITOR_PID=$!
+        
+        echo "Starting CPU profiling..."
+        curl -o k6-cpu-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/profile?seconds=60 &
+        PPROF_PID=$!
+        echo "CPU profiling started (PID: $PPROF_PID)"
+        
+        echo "Running k6 load test..."
+        k6 run k6-load-test.js
+        
+        echo "Waiting for profiling to complete..."
+        wait $PPROF_PID
+        echo "CPU profiling completed"
+        
+        echo "Taking memory profile snapshot..."
+        curl -o k6-mem-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/heap
+        echo "Memory profile saved"
+        
+        echo "Waiting for resource monitoring to complete..."
+        wait $MONITOR_PID
+        echo "Resource monitoring completed"
+      - task: db:summary
+      - task: nginx:alp
+      - |
+        echo "=== All analysis files generated ==="
+        ls -la *profile*.pb.gz 2>/dev/null || echo "No profile files found"
+        ls -la monitoring-reports/*/
+        echo "Use 'task pprof:web PROFILE=<filename>' to analyze profiles"
+    silent: false
