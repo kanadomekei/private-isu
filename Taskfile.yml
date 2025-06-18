@@ -1,6 +1,10 @@
 version: '3'
 
 tasks:
+  # =============================================================================
+  # Docker Compose Management
+  # =============================================================================
+  
   compose:up:
     desc: "Build and run the webapp stack via docker compose"
     cmds:
@@ -13,18 +17,17 @@ tasks:
       - docker compose -f webapp/docker-compose.yml down -v --remove-orphans
     silent: false
 
+  # =============================================================================
+  # Benchmarking & Load Testing
+  # =============================================================================
+
   bench:
-    desc: "Run the private-isu benchmarker and show a readable summary"
+    desc: "Run basic benchmarker (no profiling or monitoring)"
     cmds:
       - rm -f *.txt *.html *.pb.gz .pprof_pid
       - task: db:reset
       - task: nginx:reset
       - |
-        echo "Starting CPU profiling..."
-        curl -o bench-cpu-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/profile?seconds=60 &
-        PPROF_PID=$!
-        echo "CPU profiling started (PID: $PPROF_PID)"
-        
         echo "Running benchmarker..."
         docker run --rm --network host private-isu-benchmarker /bin/benchmarker -t http://host.docker.internal -u /opt/userdata | \
         jq -r '
@@ -34,24 +37,11 @@ tasks:
           "Fail: \(.fail)",
           "Messages:",
           (.messages[]? | "- " + .)
-        '
-        
-        echo "Waiting for profiling to complete..."
-        wait $PPROF_PID
-        echo "CPU profiling completed"
-        
-        echo "Taking memory profile snapshot..."
-        curl -o bench-mem-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/heap
-        echo "Memory profile saved"
-      - task: db:summary
-      - task: nginx:alp
-      - |
-        echo "=== Profile files generated ==="
-        ls -la *profile*.pb.gz 2>/dev/null || echo "No profile files found"
-        echo "Use 'task pprof:web PROFILE=<filename>' to analyze profiles"
+        ' | tee benchmark-results.txt
+      - task: reports:generate
     silent: false
 
-  bench:with-monitoring:
+  bench:monitor:
     desc: "Run benchmarker with project-focused resource monitoring"
     cmds:
       - rm -f *.txt *.html *.pb.gz .pprof_pid
@@ -76,8 +66,7 @@ tasks:
         echo "Waiting for resource monitoring to complete..."
         wait $MONITOR_PID
         echo "Project resource monitoring completed"
-      - task: db:summary
-      - task: nginx:alp
+      - task: reports:generate
       - |
         echo "=== All analysis files generated ==="
         ls -la monitoring-reports/*/
@@ -85,33 +74,38 @@ tasks:
     silent: false
 
   load-test:
-    desc: "Run comprehensive load test using k6"
+    desc: "Run k6 load test"
     cmds:
       - rm -f *.txt *.html *.json *.pb.gz .pprof_pid
       - task: db:reset
       - task: nginx:reset
       - |
-        echo "Starting CPU profiling..."
-        curl -o k6-cpu-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/profile?seconds=60 &
-        PPROF_PID=$!
-        echo "CPU profiling started (PID: $PPROF_PID)"
+        echo "Running k6 load test..."
+        k6 run k6-load-test.js
+      - task: reports:generate
+    silent: false
+
+  load-test:monitor:
+    desc: "Run k6 load test with comprehensive resource monitoring"
+    cmds:
+      - rm -f *.txt *.html *.json *.pb.gz .pprof_pid
+      - task: db:reset
+      - task: nginx:reset
+      - |
+        echo "Starting resource monitoring..."
+        ./scripts/monitor-resources.sh 60 &
+        MONITOR_PID=$!
         
         echo "Running k6 load test..."
         k6 run k6-load-test.js
         
-        echo "Waiting for profiling to complete..."
-        wait $PPROF_PID
-        echo "CPU profiling completed"
-        
-        echo "Taking memory profile snapshot..."
-        curl -o k6-mem-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/heap
-        echo "Memory profile saved"
-      - task: db:summary
-      - task: nginx:alp
+        echo "Waiting for resource monitoring to complete..."
+        wait $MONITOR_PID
+        echo "Resource monitoring completed"
+      - task: reports:generate
       - |
-        echo "=== Profile files generated ==="
-        ls -la *profile*.pb.gz 2>/dev/null || echo "No profile files found"
-        echo "Use 'task pprof:web PROFILE=<filename>' to analyze profiles"
+        echo "=== All analysis files generated ==="
+        ls -la monitoring-reports/*/
     silent: false
 
   load-test:ab:
@@ -127,14 +121,20 @@ tasks:
       - |
         echo "Running load test on {{.URL}} with {{.REQUESTS}} requests and {{.CONCURRENCY}} concurrency..."
         ab -n {{.REQUESTS}} -c {{.CONCURRENCY}} {{.URL}}
-      - task: db:summary
-      - task: nginx:alp
+      - task: reports:generate
     silent: false
 
-  # Database Performance Analysis Commands Usage Guide:
-  # db:slow: 全体的なパフォーマンス問題を詳細に分析したい時
-  # db:top: 最近のパフォーマンス問題を素早く確認したい時  
-  # db:stats: リアルタイムのクエリ統計を数値で確認したい時
+  # =============================================================================
+  # Database Analysis & Management
+  # =============================================================================
+
+  db:reset:
+    desc: "Reset and clear MySQL slow query log"
+    cmds:
+      - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'OFF'; FLUSH SLOW LOGS;"
+      - rm -f webapp/logs/mysql/slow.log
+      - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'ON';"
+      - echo "MySQL slow query log has been reset."
 
   db:slow:
     desc: "Analyze MySQL slow query log and output to slow-query-report.txt"
@@ -178,59 +178,6 @@ tasks:
           echo "Slow log file not found."
         fi
 
-  db:summary:
-    desc: "Generate comprehensive database performance summary"
-    cmds:
-      - task: db:stats
-      - task: db:slow
-      - |
-        echo "=== General Log Summary ==="
-        if [ -f webapp/logs/mysql/general.log ]; then
-          echo "Total queries in general log: $(wc -l < webapp/logs/mysql/general.log)"
-        else
-          echo "General log file not found."
-        fi
-
-  db:reset:
-    desc: "Reset and clear MySQL slow query log"
-    cmds:
-      - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'OFF'; FLUSH SLOW LOGS;"
-      - rm -f webapp/logs/mysql/slow.log
-      - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'ON';"
-      - echo "MySQL slow query log has been reset."
-
-  nginx:reset:
-    desc: "Reset and clear Nginx access and error logs"
-    cmds:
-      - rm -f webapp/logs/nginx/*.log
-      - docker compose -f webapp/docker-compose.yml exec nginx nginx -s reopen
-      - echo "Nginx logs have been reset."
-
-  nginx:alp:
-    desc: "Analyze Nginx access log with alp and save report to nginx-alp-report.txt"
-    cmds:
-      - |
-        echo "Analyzing with alp..."
-        if [ -f webapp/logs/nginx/access.log ]; then
-          alp ltsv --file webapp/logs/nginx/access.log --sort sum -r > nginx-alp-report.txt
-          echo "Analysis complete. Report saved to nginx-alp-report.txt"
-        else
-          echo "Nginx access log not found."
-        fi
-
-  nginx:goaccess:
-    desc: "Analyze Nginx access log with goaccess and save report to nginx-goaccess-report.html"
-    cmds:
-      - |
-        echo "Analyzing with goaccess..."
-        if [ -f webapp/logs/nginx/access.log ]; then
-          awk -F'\t' '{ for(i=1;i<=NF;i++){ pos = index($i, ":"); if (pos > 0) { key = substr($i, 1, pos - 1); value = substr($i, pos + 1); data[key] = value } } sub("T", " ", data["time"]); sub("\\+.*", "", data["time"]); print data["host"], data["time"], data["method"], data["uri"], "HTTP/1.1", data["status"], data["size"], data["referer"], data["ua"], data["reqtime"] }' webapp/logs/nginx/access.log | \
-          goaccess --log-format='%h %d %t %m %U %H %s %b %R %u %T' --date-format='%Y-%m-%d' --time-format='%H:%M:%S' -o nginx-goaccess-report.html
-          echo "Analysis complete. Report saved to nginx-goaccess-report.html"
-        else
-          echo "Nginx access log not found."
-        fi
-
   db:tables:
     desc: "Analyze table sizes and statistics"
     cmds:
@@ -266,7 +213,63 @@ tasks:
           SHOW VARIABLES LIKE 'long_query_time';
         " > mysql-config.txt
 
-  # Go pprof profiling commands
+  # =============================================================================
+  # Nginx Analysis & Management
+  # =============================================================================
+
+  nginx:reset:
+    desc: "Reset and clear Nginx access and error logs"
+    cmds:
+      - rm -f webapp/logs/nginx/*.log
+      - docker compose -f webapp/docker-compose.yml exec nginx nginx -s reopen
+      - echo "Nginx logs have been reset."
+
+  nginx:alp:
+    desc: "Analyze Nginx access log with alp and save report to nginx-alp-report.txt"
+    cmds:
+      - |
+        echo "Analyzing with alp..."
+        if [ -f webapp/logs/nginx/access.log ]; then
+          alp ltsv --file webapp/logs/nginx/access.log --sort sum -r > nginx-alp-report.txt
+          echo "Analysis complete. Report saved to nginx-alp-report.txt"
+        else
+          echo "Nginx access log not found."
+        fi
+
+  nginx:goaccess:
+    desc: "Analyze Nginx access log with goaccess and save report to nginx-goaccess-report.html"
+    cmds:
+      - |
+        echo "Analyzing with goaccess..."
+        if [ -f webapp/logs/nginx/access.log ]; then
+          awk -F'\t' '{ for(i=1;i<=NF;i++){ pos = index($i, ":"); if (pos > 0) { key = substr($i, 1, pos - 1); value = substr($i, pos + 1); data[key] = value } } sub("T", " ", data["time"]); sub("\\+.*", "", data["time"]); print data["host"], data["time"], data["method"], data["uri"], "HTTP/1.1", data["status"], data["size"], data["referer"], data["ua"], data["reqtime"] }' webapp/logs/nginx/access.log | \
+          goaccess --log-format='%h %d %t %m %U %H %s %b %R %u %T' --date-format='%Y-%m-%d' --time-format='%H:%M:%S' -o nginx-goaccess-report.html
+          echo "Analysis complete. Report saved to nginx-goaccess-report.html"
+        else
+          echo "Nginx access log not found."
+        fi
+
+  # =============================================================================
+  # Resource Monitoring
+  # =============================================================================
+
+  monitor:resources:
+    desc: "Monitor project-specific resources (Docker containers, processes)"
+    vars:
+      DURATION: "{{.DURATION | default \"60\"}}"
+      OUTPUT_DIR: "{{.OUTPUT_DIR | default \"\"}}"
+    cmds:
+      - |
+        if [ -z "{{.OUTPUT_DIR}}" ]; then
+          ./scripts/monitor-resources.sh {{.DURATION}}
+        else
+          ./scripts/monitor-resources.sh {{.DURATION}} {{.OUTPUT_DIR}}
+        fi
+
+  # =============================================================================
+  # Profiling (pprof)
+  # =============================================================================
+
   pprof:start:
     desc: "Start CPU profiling for 60 seconds in background"
     cmds:
@@ -305,55 +308,80 @@ tasks:
       - rm -f *.pb.gz .pprof_pid
       - echo "Profile files cleaned up"
 
-  # Resource monitoring tasks
-  monitor:resources:
-    desc: "Monitor project-specific resources (Docker containers, processes)"
-    vars:
-      DURATION: "{{.DURATION | default \"60\"}}"
-      OUTPUT_DIR: "{{.OUTPUT_DIR | default \"\"}}"
-    cmds:
-      - |
-        if [ -z "{{.OUTPUT_DIR}}" ]; then
-          ./scripts/monitor-resources.sh {{.DURATION}}
-        else
-          ./scripts/monitor-resources.sh {{.DURATION}} {{.OUTPUT_DIR}}
-        fi
+  # =============================================================================
+  # Report Generation
+  # =============================================================================
 
-  load-test:with-monitoring:
-    desc: "Run k6 load test with comprehensive resource monitoring"
+  reports:generate:
+    desc: "Generate all analysis reports (DB, Nginx)"
     cmds:
-      - rm -f *.txt *.html *.json *.pb.gz .pprof_pid
-      - task: db:reset
-      - task: nginx:reset
-      - |
-        echo "Starting resource monitoring..."
-        ./scripts/monitor-resources.sh 60 &
-        MONITOR_PID=$!
-        
-        echo "Starting CPU profiling..."
-        curl -o k6-cpu-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/profile?seconds=60 &
-        PPROF_PID=$!
-        echo "CPU profiling started (PID: $PPROF_PID)"
-        
-        echo "Running k6 load test..."
-        k6 run k6-load-test.js
-        
-        echo "Waiting for profiling to complete..."
-        wait $PPROF_PID
-        echo "CPU profiling completed"
-        
-        echo "Taking memory profile snapshot..."
-        curl -o k6-mem-profile-$(date +%Y%m%d-%H%M%S).pb.gz http://localhost:6060/debug/pprof/heap
-        echo "Memory profile saved"
-        
-        echo "Waiting for resource monitoring to complete..."
-        wait $MONITOR_PID
-        echo "Resource monitoring completed"
-      - task: db:summary
+      - task: db:slow
+      - task: db:stats
       - task: nginx:alp
       - |
-        echo "=== All analysis files generated ==="
-        ls -la *profile*.pb.gz 2>/dev/null || echo "No profile files found"
-        ls -la monitoring-reports/*/
-        echo "Use 'task pprof:web PROFILE=<filename>' to analyze profiles"
-    silent: false
+        echo "=== All reports generated ==="
+        echo "Database reports:"
+        ls -la *query*report*.txt *stats*.txt 2>/dev/null || echo "No database reports found"
+        echo "Nginx reports:"
+        ls -la *alp*report*.txt 2>/dev/null || echo "No nginx reports found"
+
+  reports:summary:
+    desc: "Show summary of all generated reports"
+    cmds:
+      - |
+        echo "=== Generated Reports Summary ==="
+        echo ""
+        echo "Database Analysis:"
+        if [ -f slow-query-report.txt ]; then
+          echo "✓ slow-query-report.txt - $(wc -l < slow-query-report.txt) lines"
+        else
+          echo "✗ slow-query-report.txt - Not found"
+        fi
+        if [ -f mysql-stats-report.txt ]; then
+          echo "✓ mysql-stats-report.txt - $(wc -l < mysql-stats-report.txt) lines"
+        else
+          echo "✗ mysql-stats-report.txt - Not found"
+        fi
+        
+        echo ""
+        echo "Nginx Analysis:"
+        if [ -f nginx-alp-report.txt ]; then
+          echo "✓ nginx-alp-report.txt - $(wc -l < nginx-alp-report.txt) lines"
+        else
+          echo "✗ nginx-alp-report.txt - Not found"
+        fi
+        
+        echo ""
+        echo "Resource Monitoring:"
+        LATEST_REPORT=$(ls -1t monitoring-reports/*/final-summary.txt 2>/dev/null | head -1)
+        if [ -n "$LATEST_REPORT" ]; then
+          echo "✓ Latest monitoring report: $LATEST_REPORT"
+        else
+          echo "✗ No monitoring reports found"
+        fi
+        
+        echo ""
+        echo "Benchmark Results:"
+        if [ -f benchmark-results.txt ]; then
+          echo "✓ benchmark-results.txt - $(cat benchmark-results.txt | grep -E '(Score|Success|Fail)')"
+        else
+          echo "✗ benchmark-results.txt - Not found"
+        fi
+
+  # =============================================================================
+  # Cleanup & Maintenance
+  # =============================================================================
+
+  clean:
+    desc: "Clean up all generated files and logs"
+    cmds:
+      - rm -f *.txt *.html *.pb.gz .pprof_pid *.log
+      - rm -rf monitoring-reports/
+      - echo "All generated files cleaned up"
+
+  clean:logs:
+    desc: "Clean up application logs only"
+    cmds:
+      - task: db:reset
+      - task: nginx:reset
+      - echo "Application logs cleaned up"
