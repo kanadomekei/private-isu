@@ -6,14 +6,10 @@
 DURATION=${1:-60}
 OUTPUT_DIR=${2:-"monitoring-reports/$(date +%Y%m%d-%H%M%S)"}
 
-echo "Starting project-focused resource monitoring for ${DURATION} seconds..."
-echo "Output directory: ${OUTPUT_DIR}"
-
 # 出力ディレクトリを作成
 mkdir -p "${OUTPUT_DIR}"
 
 # バックグラウンドで各種リソース監視を開始
-echo "Starting monitoring processes..."
 
 # Docker関連プロセスの詳細監視
 (
@@ -83,18 +79,11 @@ NGINX_PID=$!
 APP_PID=$!
 
 # 監視プロセスIDを記録
-echo "Monitoring PIDs:"
-echo "Docker Detailed: ${DOCKER_PID}"
-echo "MySQL Metrics: ${MYSQL_PID}"
-echo "Nginx Metrics: ${NGINX_PID}"
-echo "App Metrics: ${APP_PID}"
 
 # 監視プロセスの完了を待機
-echo "Waiting for monitoring to complete..."
 
 # 指定された時間が経過したら全プロセスを強制終了
 sleep $DURATION
-echo "Monitoring duration completed. Stopping all monitoring processes..."
 
 # 全監視プロセスを停止
 kill ${DOCKER_PID} ${MYSQL_PID} ${NGINX_PID} ${APP_PID} 2>/dev/null
@@ -105,8 +94,6 @@ sleep 3
 # まだ残っているプロセスがあれば強制終了
 jobs -p | xargs kill -9 2>/dev/null || true
 
-echo "Project resource monitoring completed!"
-echo "Reports saved to: ${OUTPUT_DIR}"
 
 # 最終的なDockerサマリーを生成
 echo "=== Final Project Summary ===" > "${OUTPUT_DIR}/final-summary.txt"
@@ -124,6 +111,3 @@ docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\
 echo "Generated files:" >> "${OUTPUT_DIR}/final-summary.txt"
 ls -la "${OUTPUT_DIR}"/*.log >> "${OUTPUT_DIR}/final-summary.txt" 2>/dev/null
 
-echo ""
-echo "=== Final Project Summary ==="
-cat "${OUTPUT_DIR}/final-summary.txt"

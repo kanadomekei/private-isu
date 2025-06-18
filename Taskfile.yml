@@ -48,11 +48,9 @@ tasks:
       - task: db:reset
       - task: nginx:reset
       - |
-        echo "Starting project resource monitoring..."
         ./scripts/monitor-resources.sh 60 &
         MONITOR_PID=$!
         
-        echo "Running benchmarker..."
         docker run --rm --network host private-isu-benchmarker /bin/benchmarker -t http://host.docker.internal -u /opt/userdata | \
         jq -r '
           "Pass: \(.pass)",
@@ -63,15 +61,9 @@ tasks:
           (.messages[]? | "- " + .)
         ' | tee benchmark-results.txt
         
-        echo "Waiting for resource monitoring to complete..."
         wait $MONITOR_PID
-        echo "Project resource monitoring completed"
       - task: reports:generate
-      - |
-        echo "=== All analysis files generated ==="
-        ls -la monitoring-reports/*/
-        echo "Check monitoring-reports/ directory for detailed resource analysis"
-    silent: false
+    silent: true
 
   load-test:
     desc: "Run k6 load test"
@@ -131,9 +123,9 @@ tasks:
   db:reset:
     desc: "Reset and clear MySQL slow query log"
     cmds:
-      - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'OFF'; FLUSH SLOW LOGS;"
+      - docker compose -f webapp/docker-compose.yml exec mysql mysql -h127.0.0.1 -uroot -proot -e "SET GLOBAL slow_query_log = 'OFF'; FLUSH SLOW LOGS;"
       - rm -f webapp/logs/mysql/slow.log
-      - docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "SET GLOBAL slow_query_log = 'ON';"
+      - docker compose -f webapp/docker-compose.yml exec mysql mysql -h127.0.0.1 -uroot -proot -e "SET GLOBAL slow_query_log = 'ON';"
       - echo "MySQL slow query log has been reset."
 
   db:slow:
@@ -153,7 +145,7 @@ tasks:
     cmds:
       - |
         echo "=== Generating MySQL Performance Statistics Report ==="
-        docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
+        docker compose -f webapp/docker-compose.yml exec mysql mysql -h127.0.0.1 -uroot -proot -e "
           SELECT 
             COUNT_STAR as total_queries,
             SUM_TIMER_WAIT/1000000000000 as total_time_sec,
@@ -182,7 +174,7 @@ tasks:
     desc: "Analyze table sizes and statistics"
     cmds:
       - |
-        docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
+        docker compose -f webapp/docker-compose.yml exec mysql mysql -h127.0.0.1 -uroot -proot -e "
           SELECT 
             table_name,
             table_rows,
@@ -196,7 +188,7 @@ tasks:
     desc: "Show current MySQL processes and connections"
     cmds:
       - |
-        docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
+        docker compose -f webapp/docker-compose.yml exec mysql mysql -h127.0.0.1 -uroot -proot -e "
           SHOW PROCESSLIST;
           SHOW STATUS LIKE 'Threads_%';
           SHOW STATUS LIKE 'Connection%';
@@ -206,7 +198,7 @@ tasks:
     desc: "Show important MySQL configuration settings"
     cmds:
       - |
-        docker compose -f webapp/docker-compose.yml exec mysql mysql -uroot -proot -e "
+        docker compose -f webapp/docker-compose.yml exec mysql mysql -h127.0.0.1 -uroot -proot -e "
           SHOW VARIABLES LIKE 'innodb_buffer_pool_size';
           SHOW VARIABLES LIKE 'query_cache%';
           SHOW VARIABLES LIKE 'slow_query_log%';
